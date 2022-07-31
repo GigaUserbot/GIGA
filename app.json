@@ -10,7 +10,7 @@
     ],
     "repository": "https://github.com/GigaUserbot/GIGA",
     "success_url": "https://t.me/GigaUpdates",
-    "stack": "container",
+    "stack": "heroku-22",
     "env": {
      "APP_ID": {
       "description": "Get this value from my.telegram.org!",
