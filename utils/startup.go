@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"github.com/anonyindian/giga/sql"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/storage"
+	"github.com/gigauserbot/giga/sql"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/tg"
 )

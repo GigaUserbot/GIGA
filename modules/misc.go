@@ -4,12 +4,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/anonyindian/giga/utils"
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/entityhelper"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/tg"
 )
 

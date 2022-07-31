@@ -1,11 +1,13 @@
-module github.com/anonyindian/giga
+module github.com/gigauserbot/giga
 
+// +heroku goVersion go1.18
 go 1.18
 
 require (
 	github.com/anonyindian/gotgproto v1.0.0-beta06
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/gotd/td v0.63.0
+	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.2
 	gorm.io/driver/postgres v1.3.8
 	gorm.io/gorm v1.23.8

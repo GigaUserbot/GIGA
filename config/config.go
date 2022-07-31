@@ -15,7 +15,7 @@ var ValueOf = &config{}
 type config struct {
 	AppId         int    `json:"app_id"`
 	ApiHash       string `json:"api_hash"`
-	DatabaseURI   string `json:"db_uri"`
+	DatabaseUrl   string `json:"db_uri"`
 	SessionString string `json:"session_string"`
 }
 
@@ -24,8 +24,11 @@ func Load(l *logger.Logger) {
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
 	b, err := ioutil.ReadFile("config.json")
 	if err != nil {
-		l.ChangeLevel(logger.LevelError).Println("failed to load config:", err.Error())
-		os.Exit(1)
+		if err := ValueOf.setupEnvVars(); err != nil {
+			l.ChangeLevel(logger.LevelError).Println(err.Error())
+			os.Exit(1)
+		}
+		return
 	}
 	err = json.Unmarshal(b, ValueOf)
 	if err != nil {

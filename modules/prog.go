@@ -11,7 +11,7 @@ import (
 )
 
 func (m *module) LoadProg(dispatcher *dispatcher.CustomDispatcher) {
-	var l = m.Logger.Create("AFK")
+	var l = m.Logger.Create("PROG")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
 	dispatcher.AddHandler(handlers.NewCommand("killub", authorised(killub)))
 }

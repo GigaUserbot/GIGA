@@ -5,8 +5,8 @@ package sql
 import (
 	"os"
 
-	"github.com/anonyindian/giga/config"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/config"
 	"github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,7 +18,7 @@ var SESSION *gorm.DB
 func Load(l *logger.Logger) {
 	l = l.Create("DATABASE")
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
-	conn, err := pq.ParseURL(config.ValueOf.DatabaseURI)
+	conn, err := pq.ParseURL(config.ValueOf.DatabaseUrl)
 	if err != nil {
 		l.ChangeLevel(logger.LevelError).Println("failed to parse postgres URL:", err.Error())
 		os.Exit(1)

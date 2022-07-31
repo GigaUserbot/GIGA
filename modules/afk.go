@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/anonyindian/giga/sql"
 	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
@@ -12,6 +11,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/stylisehelper"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/sql"
 	"github.com/gotd/td/telegram/message/styling"
 	"github.com/gotd/td/tg"
 )
@@ -44,7 +44,7 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 				}()),
 			})
 		case "off", "false":
-			go sql.UpdateAFK(true, "")
+			go sql.UpdateAFK(false, "")
 			ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 				ID:      u.EffectiveMessage.ID,
 				Message: "Turned off AFK mode.",

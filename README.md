@@ -8,17 +8,21 @@
 
 GIGA is a powerful telegram userbot written in Go with the help of [gotd](https://github.com/gotd/td) and [gotgproto](https://github.com/anonyindian/gotgproto).
 
-## Progress and Deployment
+## Deployment
 The userbot is still under development but you can deploy it through your console by following a few steps:
-
-- Create config file
-    -> `cp sample_config.json config.json`
-  
-  After copying the sample config to build config, just fill up the required fields in config file. 
-- Build the project
-    -> `go build . -o giga`
-- Run the binary built 
-    -> `./giga`
+- **Console based deployment**
+    - Create config file
+        -> `cp sample_config.json config.json`
+    
+        After copying the sample config to build config, just fill up the required fields in config file. 
+    - Build the project
+        -> `go build . -o giga`
+    - Run the binary built 
+        -> `./giga`
+- **Deploying on Heroku**
+    - You can quickly deploy GIGA on Heroku using the following deploy button:
+    
+        [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/GigaUserbot/GIGA)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
