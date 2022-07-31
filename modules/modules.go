@@ -3,7 +3,10 @@ package modules
 import (
 	"reflect"
 
+	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
+	"github.com/anonyindian/gotgproto/dispatcher/handlers"
+	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/logger"
 )
 
@@ -20,3 +23,21 @@ func Load(l *logger.Logger, dispatcher *dispatcher.CustomDispatcher) {
 		Type.Method(i).Func.Call([]reflect.Value{Value, reflect.ValueOf(dispatcher)})
 	}
 }
+
+func authorised(cback handlers.CallbackResponse) handlers.CallbackResponse {
+	return func(ctx *ext.Context, u *ext.Update) error {
+		if u.EffectiveUser() != nil && u.EffectiveUser().ID == gotgproto.Self.ID {
+			return cback(ctx, u)
+		}
+		return dispatcher.EndGroups
+	}
+}
+
+// func authorisedMessage(cback handlers.CallbackResponse) handlers.CallbackResponse {
+// 	return func(ctx *ext.Context, u *ext.Update) error {
+// 		if u.EffectiveUser() != nil && u.EffectiveUser().ID == gotgproto.Self.ID {
+// 			return cback(ctx, u)
+// 		}
+// 		return nil
+// 	}
+// }

@@ -6,14 +6,16 @@ import (
 
 	"github.com/anonyindian/giga/config"
 	"github.com/anonyindian/giga/modules"
+	"github.com/anonyindian/giga/sql"
 	"github.com/anonyindian/giga/utils"
 	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
+	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/sessionMaker"
 	"github.com/anonyindian/logger"
 	"github.com/gotd/td/telegram"
-	"github.com/gotd/td/telegram/dcs"
+	"github.com/gotd/td/tg"
 )
 
 func main() {
@@ -25,13 +27,13 @@ func main() {
 	}
 	config.Load(l)
 	handlers.DefaultPrefix = []rune{'.', '$'}
+	sql.Load(l)
 	runClient(l)
 }
 
 func runClient(l *logger.Logger) {
 	// custom dispatcher handles all the updates
 	dp := dispatcher.MakeDispatcher()
-	modules.Load(l, dp)
 	gotgproto.StartClient(gotgproto.ClientHelper{
 		// Get AppID from https://my.telegram.org/apps
 		AppID: config.ValueOf.AppId,
@@ -52,12 +54,15 @@ func runClient(l *logger.Logger) {
 						break
 					}
 				}
+				ctx := ext.NewContext(ctx, client.API(), gotgproto.Self, gotgproto.Sender, &tg.Entities{})
 				utils.TelegramClient = client
 				utils.StartupAutomations(ctx, client)
+				// Modules shall not be loaded unless the setup is complete
+				modules.Load(l, dp)
 			}()
 			return nil
 		},
 		// Uncomment DCList to run Giga on test servers
-		DCList: dcs.Test(),
+		// DCList: dcs.Test(),
 	})
 }

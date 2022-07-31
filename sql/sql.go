@@ -25,7 +25,7 @@ func Load(l *logger.Logger) {
 	}
 	db, err := gorm.Open(postgres.Open(conn), &gorm.Config{
 		SkipDefaultTransaction: true,
-		Logger:                 glogger.Default.LogMode(glogger.Silent),
+		Logger:                 glogger.Default.LogMode(glogger.Error),
 	})
 	if err != nil {
 		l.Println("failed to connect to DB:", err.Error())
@@ -36,5 +36,5 @@ func Load(l *logger.Logger) {
 	dB.SetMaxOpenConns(100)
 
 	// Create tables if they don't exist
-	SESSION.AutoMigrate()
+	SESSION.AutoMigrate(&Settings{})
 }

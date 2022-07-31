@@ -8,7 +8,7 @@ require (
 	github.com/gotd/td v0.63.0
 	github.com/lib/pq v1.10.2
 	gorm.io/driver/postgres v1.3.8
-	gorm.io/gorm v1.23.6
+	gorm.io/gorm v1.23.8
 )
 
 require (
