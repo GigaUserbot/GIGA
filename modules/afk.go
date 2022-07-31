@@ -38,7 +38,7 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 				ID: u.EffectiveMessage.ID,
 				Message: fmt.Sprintf("Turned on AFK mode.%s", func() string {
 					if reason != "" {
-						return fmt.Sprintf("Reason: %s", reason)
+						return fmt.Sprintf("\nReason: %s", reason)
 					}
 					return reason
 				}()),
@@ -66,6 +66,11 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 
 func checkAfk(ctx *ext.Context, u *ext.Update) error {
 	chat := u.EffectiveChat()
+	user := u.EffectiveUser()
+	if user != nil && user.Bot {
+		// Don't replt to bots ffs
+		return nil
+	}
 	if !(u.EffectiveMessage.Mentioned || (chat.IsAUser() && chat.GetID() != gotgproto.Self.ID)) {
 		return nil
 	}

@@ -36,5 +36,5 @@ func Load(l *logger.Logger) {
 	dB.SetMaxOpenConns(100)
 
 	// Create tables if they don't exist
-	SESSION.AutoMigrate(&Settings{})
+	SESSION.AutoMigrate(&AFK{}, &Settings{})
 }
