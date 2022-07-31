@@ -1,6 +1,12 @@
-# GigaUserbot
+<p align="center">
+<img src="./logo.png">
+<b>A Powerful Telegram Userbot</b>
+<br>
+<a href="https://telegram.me/GIGAupdates"><img src="https://img.shields.io/badge/Updates%20Channel-blue?logo=telegram"></a>
+<a href="https://telegram.me/GIGAsupport"><img src="https://img.shields.io/badge/Support%20Group-blue?logo=telegram"></a>
+</p>
 
-Giga is a powerful telegram userbot written in Go with the help of [gotd](https://github.com/gotd/td) and [gotgproto](https://github.com/anonyindian/gotgproto).
+GIGA is a powerful telegram userbot written in Go with the help of [gotd](https://github.com/gotd/td) and [gotgproto](https://github.com/anonyindian/gotgproto).
 
 ## Progress and Deployment
 The userbot is still under development but you can deploy it through your console by following a few steps:
@@ -14,6 +20,8 @@ The userbot is still under development but you can deploy it through your consol
 - Run the binary built 
     -> `./giga`
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 [![GNU Affero General Public License v3.0](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/agpl-3.0.en.html#header)    
