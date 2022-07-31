@@ -26,6 +26,9 @@
      }
     },
     "addons": [{
-     "plan": "heroku-postgresql"
+        "plan": "heroku-postgresql"
+    }],
+    "buildpack": [{
+        "url": "heroku/go"
     }]
 }
