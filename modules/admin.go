@@ -36,6 +36,7 @@ func ban(ctx *ext.Context, u *ext.Update) error {
 			ID:      u.EffectiveMessage.ID,
 			Message: fmt.Sprintf("failed to ban user: %s", err.Error()),
 		})
+		return dispatcher.EndGroups
 	}
 	_, err = ctx.BanChatMember(chat.GetID(), target, 0)
 	if err != nil {
@@ -43,6 +44,7 @@ func ban(ctx *ext.Context, u *ext.Update) error {
 			ID:      u.EffectiveMessage.ID,
 			Message: fmt.Sprintf("failed to ban user: %s", err.Error()),
 		})
+		return dispatcher.EndGroups
 	} else {
 		text := stylisehelper.Start(styling.Plain("Successfully banned "))
 		text.Mention("this user", target).Plain(".")
@@ -63,6 +65,7 @@ func unban(ctx *ext.Context, u *ext.Update) error {
 			ID:      u.EffectiveMessage.ID,
 			Message: fmt.Sprintf("failed to unban user: %s", err.Error()),
 		})
+		return dispatcher.EndGroups
 	}
 	_, err = ctx.UnbanChatMember(chat.GetID(), target, 0)
 	if err != nil {
@@ -70,6 +73,7 @@ func unban(ctx *ext.Context, u *ext.Update) error {
 			ID:      u.EffectiveMessage.ID,
 			Message: fmt.Sprintf("failed to unban user: %s", err.Error()),
 		})
+		return dispatcher.EndGroups
 	} else {
 		text := stylisehelper.Start(styling.Plain("Successfully unbanned "))
 		text.Mention("this user", target).Plain(".")

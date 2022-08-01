@@ -48,7 +48,6 @@ func ExtractUser(ctx *ext.Context, msg *tg.Message, chat types.EffectiveChat) (t
 			err = errors.New("no user provided")
 			return
 		}
-		msg.MapEntities()
 		var c types.EffectiveChat
 		c, err = ctx.ResolveUsername(args[1])
 		if err != nil {
