@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/storage"
 	"github.com/gigauserbot/giga/sql"
@@ -13,9 +15,16 @@ var TelegramClient *telegram.Client
 // StartupAutomations includes the stuff to be done on each startup
 func StartupAutomations(ctx *ext.Context, client *telegram.Client) {
 	if group := setupLogsGroup(ctx, client); group != 0 {
-		ctx.SendMessage(group, &tg.MessagesSendMessageRequest{
+		_, err := ctx.SendMessage(group, &tg.MessagesSendMessageRequest{
 			Message: "Your GIGA is alive!",
 		})
+		if err != nil {
+			// check err in string because unwrapping didn't work
+			if strings.Contains(err.Error(), "PEER_ID_INVALID") {
+				sql.UpdateSettings(0)
+				StartupAutomations(ctx, client)
+			}
+		}
 	}
 }
 

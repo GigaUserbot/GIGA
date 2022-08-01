@@ -15,6 +15,7 @@ import (
 	"github.com/gigauserbot/giga/sql"
 	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/telegram"
+	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/tg"
 )
 
@@ -62,7 +63,11 @@ func runClient(l *logger.Logger) {
 			}()
 			return nil
 		},
-		// Uncomment DCList to run Giga on test servers
-		// DCList: dcs.Test(),
+		DCList: func() (dct dcs.List) {
+			if config.ValueOf.TestServer {
+				dct = dcs.Test()
+			}
+			return
+		}(),
 	})
 }

@@ -17,6 +17,7 @@ type config struct {
 	ApiHash       string `json:"api_hash"`
 	DatabaseUrl   string `json:"db_uri"`
 	SessionString string `json:"session_string"`
+	TestServer    bool   `json:"test_mode,omitempty"`
 }
 
 func Load(l *logger.Logger) {

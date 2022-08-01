@@ -18,7 +18,8 @@ func (c *config) setupEnvVars() error {
 	for i := 0; i < val.NumField(); i++ {
 		name := toUpperSnakeCase(val.Type().Field(i).Name)
 		envVal := os.Getenv(name)
-		if envVal == "" {
+		tagVal := strings.TrimSpace(val.Type().Field(i).Tag.Get("json"))
+		if envVal == "" && !strings.HasSuffix(tagVal, "omitempty") {
 			notFoundArr = append(notFoundArr, name)
 		}
 		switch val.Type().Field(i).Type.Kind() {
