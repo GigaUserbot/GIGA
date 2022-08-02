@@ -65,7 +65,7 @@ func jsonify(ctx *ext.Context, u *ext.Update) error {
 			msg = md
 		}
 	}
-	b, err := json.Marshal(msg)
+	b, err := json.MarshalIndent(msg, "", " ")
 	if err != nil {
 		ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 			ID:      u.EffectiveMessage.ID,
