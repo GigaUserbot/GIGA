@@ -5,7 +5,7 @@ RUN addgroup -S scratchuser \
 RUN apk add -U --no-cache ca-certificates
 WORKDIR /app
 COPY . .
-RUN CGO_ENABLED=0 GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o out/GigaUserbot
+RUN CGO_ENABLED=0 GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o out/GigaUserbot -ldflags="-w -s" .
 
 # Run Stage: Run bot using the bot and doppler binary copied from build stage
 FROM scratch
