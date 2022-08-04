@@ -2,17 +2,21 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
 	"os"
 
 	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
+	"github.com/anonyindian/gotgproto/dispatcher/handlers/filters"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/sessionMaker"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/config"
+	"github.com/gigauserbot/giga/db"
 	"github.com/gigauserbot/giga/modules"
-	"github.com/gigauserbot/giga/sql"
 	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/dcs"
@@ -28,14 +32,39 @@ func main() {
 	}
 	config.Load(l)
 	handlers.DefaultPrefix = []rune{'.', '$'}
-	sql.Load(l)
+	db.Load(l)
 	runClient(l)
 }
 
+const BOT_FATHER_ID = 93372553
+
 func runClient(l *logger.Logger) {
+	log := l.Create("CLIENT")
 	// custom dispatcher handles all the updates
 	dp := dispatcher.MakeDispatcher()
-	gotgproto.StartClient(gotgproto.ClientHelper{
+	dp.AddHandlerToGroup(handlers.NewMessage(filters.Message.Text, func(ctx *ext.Context, u *ext.Update) error {
+		chat := u.EffectiveChat()
+		if chat.GetID() != BOT_FATHER_ID {
+			return nil
+		}
+		if !utils.TOKEN_REGEXP.MatchString(u.EffectiveMessage.Message) {
+			return nil
+		}
+		token := utils.TOKEN_REGEXP.FindString(u.EffectiveMessage.Message)
+		// let it panic if err arise
+		resp, _ := http.Get("api.telegram.org/bot%s/getMe")
+		b, _ := ioutil.ReadAll(resp.Body)
+		getme := struct {
+			UserId int64 `json:"user_id"`
+		}{}
+		if json.Unmarshal(b, &getme) != nil {
+			return nil
+		}
+		db.SetBot(token)
+		utils.BotSaved = true
+		return nil
+	}), -69)
+	gotgproto.StartClient(&gotgproto.ClientHelper{
 		// Get AppID from https://my.telegram.org/apps
 		AppID: config.ValueOf.AppId,
 		// Get ApiHash from https://my.telegram.org/apps
@@ -51,15 +80,17 @@ func runClient(l *logger.Logger) {
 			go func() {
 				for {
 					if gotgproto.Sender != nil {
-						l.Println("GIGA HAS BEEN STARTED")
+						log.ChangeLevel(logger.LevelInfo).Println("STARTED")
 						break
 					}
 				}
 				ctx := ext.NewContext(ctx, client.API(), gotgproto.Self, gotgproto.Sender, &tg.Entities{})
 				utils.TelegramClient = client
+
 				utils.StartupAutomations(ctx, client)
 				// Modules shall not be loaded unless the setup is complete
 				modules.Load(l, dp)
+				l.Println("GIGA HAS BEEN STARTED")
 			}()
 			return nil
 		},

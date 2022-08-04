@@ -9,7 +9,6 @@ import (
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/entityhelper"
-	"github.com/anonyindian/gotgproto/types"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/tg"
@@ -27,32 +26,9 @@ func jsonify(ctx *ext.Context, u *ext.Update) error {
 	chat := u.EffectiveChat()
 	msg := u.EffectiveMessage
 	if id := msg.ReplyTo.ReplyToMsgID; id != 0 {
-		var (
-			m   []tg.MessageClass
-			err error
-		)
-		if _, ok := chat.(*types.Chat); ok {
-			m, err = ctx.GetMessages([]tg.InputMessageClass{&tg.InputMessageID{
-				ID: id,
-			}})
-		} else {
-			var ms tg.MessagesMessagesClass
-			ms, err = ctx.Client.ChannelsGetMessages(ctx, &tg.ChannelsGetMessagesRequest{
-				Channel: &tg.InputChannel{
-					ChannelID:  chat.GetID(),
-					AccessHash: chat.GetAccessHash(),
-				},
-				ID: []tg.InputMessageClass{&tg.InputMessageID{
-					ID: id,
-				}},
-			})
-			switch mt := ms.(type) {
-			case *tg.MessagesMessages:
-				m = mt.Messages
-			case *tg.MessagesChannelMessages:
-				m = mt.Messages
-			}
-		}
+		m, err := ctx.GetMessages(chat.GetID(), []tg.InputMessageClass{&tg.InputMessageID{
+			ID: id,
+		}})
 		if err != nil {
 			ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 				ID:      msg.ID,
@@ -65,7 +41,7 @@ func jsonify(ctx *ext.Context, u *ext.Update) error {
 			msg = md
 		}
 	}
-	b, err := json.MarshalIndent(msg, "", " ")
+	b, err := json.MarshalIndent(msg, "", "    ")
 	if err != nil {
 		ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 			ID:      u.EffectiveMessage.ID,
@@ -73,7 +49,7 @@ func jsonify(ctx *ext.Context, u *ext.Update) error {
 		})
 		return dispatcher.EndGroups
 	}
-	text := entityhelper.StartParsing().Code(string(b))
+	text := entityhelper.Code(string(b))
 	ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 		ID:       u.EffectiveMessage.ID,
 		Message:  text.GetString(),
@@ -83,8 +59,7 @@ func jsonify(ctx *ext.Context, u *ext.Update) error {
 }
 
 func alive(ctx *ext.Context, u *ext.Update) error {
-	text := entityhelper.StartParsing()
-	text.Bold(`
+	text := entityhelper.Bold(`
 The GIGA Userbot is currently up and working fine,
 Written using @gotgproto by @GIGADevs.
 `)
@@ -100,7 +75,7 @@ func ping(ctx *ext.Context, u *ext.Update) error {
 	timeThen := time.Now()
 	utils.TelegramClient.Ping(ctx)
 	timeNow := time.Since(timeThen)
-	text := entityhelper.StartParsing().Bold("PONG\n").Code(strconv.FormatInt(timeNow.Milliseconds(), 10) + "ms")
+	text := entityhelper.Plain("PONG\n").Code(strconv.FormatInt(timeNow.Milliseconds(), 10) + "ms")
 	ctx.EditMessage(u.EffectiveChat().GetID(), &tg.MessagesEditMessageRequest{
 		ID:       u.EffectiveMessage.ID,
 		Message:  text.String,

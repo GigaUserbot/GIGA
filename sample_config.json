@@ -1,6 +1,7 @@
 {
     "app_id":12345,
     "api_hash":"hash",
-    "db_uri": "postgres://",
+    "redis_uri": "",
+    "redis_pass": "",
     "session_string":"string"
 }

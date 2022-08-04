@@ -11,7 +11,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/stylisehelper"
 	"github.com/anonyindian/logger"
-	"github.com/gigauserbot/giga/sql"
+	"github.com/gigauserbot/giga/db"
 	"github.com/gotd/td/telegram/message/styling"
 	"github.com/gotd/td/tg"
 )
@@ -33,7 +33,7 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 			if len(args) > 2 {
 				reason = strings.Join(args[2:], " ")
 			}
-			go sql.UpdateAFK(true, reason)
+			go db.UpdateAFK(true, reason)
 			ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 				ID: u.EffectiveMessage.ID,
 				Message: fmt.Sprintf("Turned on AFK mode.%s", func() string {
@@ -44,7 +44,7 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 				}()),
 			})
 		case "off", "false":
-			go sql.UpdateAFK(false, "")
+			go db.UpdateAFK(false, "")
 			ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 				ID:      u.EffectiveMessage.ID,
 				Message: "Turned off AFK mode.",
@@ -74,13 +74,12 @@ func checkAfk(ctx *ext.Context, u *ext.Update) error {
 	if !(u.EffectiveMessage.Mentioned || (chat.IsAUser() && chat.GetID() != gotgproto.Self.ID)) {
 		return nil
 	}
-	afk := sql.GetAFK()
-	if !afk.Toggle {
+	if db.GetAFK() {
 		return nil
 	}
 	text := stylisehelper.Start(styling.Plain("I'm currently AFK"))
-	if afk.Reason != "" {
-		text.Plain("\nReason: ").Code(afk.Reason)
+	if reason := db.GetAFKReason(); reason != "" {
+		text.Plain("\nReason: ").Code(reason)
 	}
 	ctx.Reply(u, text.StoArray, nil)
 	return nil

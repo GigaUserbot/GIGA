@@ -15,7 +15,8 @@ var ValueOf = &config{}
 type config struct {
 	AppId         int    `json:"app_id"`
 	ApiHash       string `json:"api_hash"`
-	DatabaseUrl   string `json:"db_uri"`
+	RedisUri      string `json:"redis_uri"`
+	RedisPass     string `json:"redis_pass"`
 	SessionString string `json:"session_string"`
 	TestServer    bool   `json:"test_mode,omitempty"`
 }
