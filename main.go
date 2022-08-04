@@ -60,7 +60,7 @@ func runClient(l *logger.Logger) {
 		if json.Unmarshal(b, &getme) != nil {
 			return nil
 		}
-		db.SetBot(token)
+		db.UpdateBot(token)
 		utils.BotSaved = true
 		return nil
 	}), -69)

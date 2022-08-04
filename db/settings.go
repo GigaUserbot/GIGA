@@ -1,14 +1,29 @@
 package db
 
-func SetLogsGroup(id int64) {
-	set("logs_group", id)
+type Settings struct {
+	LogsGroup int64
+	Token     string
 }
 
-func GetLogsGroup() (i int64) {
-	i, _ = get("logs_group").Int64()
-	return
+func UpdateSettings(logs int64, token string) {
+	set("settings", &Settings{LogsGroup: logs, Token: token})
 }
 
-func SetBot(token string) {
-	set("bot_token", token)
+func UpdateLogs(logs int64) {
+	var s = &Settings{}
+	get("settings", s)
+	s.LogsGroup = logs
+	set("settings", s)
+}
+
+func UpdateBot(token string) {
+	var s = &Settings{}
+	get("settings", s)
+	s.Token = token
+	set("settings", s)
+}
+
+func GetSettings() (s *Settings) {
+	get("settings", s)
+	return s
 }

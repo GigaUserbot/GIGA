@@ -29,7 +29,7 @@ func StartupAutomations(ctx *ext.Context, client *telegram.Client) {
 		if err != nil {
 			// check err in string because unwrapping didn't work
 			if strings.Contains(err.Error(), "PEER_ID_INVALID") {
-				db.SetLogsGroup(0)
+				db.UpdateLogs(0)
 				StartupAutomations(ctx, client)
 				return
 			}
@@ -73,7 +73,7 @@ func setupBot(ctx *ext.Context, client *telegram.Client, u types.EffectiveChat) 
 }
 
 func setupLogsGroup(ctx *ext.Context, client *telegram.Client) int64 {
-	if group := db.GetLogsGroup(); group != 0 {
+	if group := db.GetSettings().LogsGroup; group != 0 {
 		return group
 	}
 	u, _ := ctx.ResolveUsername("GIGAubot")
@@ -91,6 +91,6 @@ func setupLogsGroup(ctx *ext.Context, client *telegram.Client) int64 {
 	group := update.Chats[0].GetID()
 	// Add created group's peer to storage coz gotgproto still doesn't do that :P
 	storage.AddPeer(group, storage.DefaultAccessHash, storage.TypeChat, storage.DefaultUsername)
-	db.SetLogsGroup(group)
+	db.UpdateLogs(group)
 	return group
 }

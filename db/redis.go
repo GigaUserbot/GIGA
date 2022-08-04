@@ -27,29 +27,29 @@ func Load(l *logger.Logger) {
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
 }
 
-func getT(key string, T interface{}) {
+func get(key string, T interface{}) {
 	b, _ := client.Get(key).Bytes()
 	gob.NewDecoder(bytes.NewBuffer(b)).Decode(T)
 }
 
-func setT(key string, T interface{}) {
-	set(key, encode(T))
+func set(key string, T interface{}) {
+	setRaw(key, encode(T))
 }
 
-func get(key string) *redis.StringCmd {
+func getRaw(key string) *redis.StringCmd {
 	return client.Get(key)
 }
 
-func set(key string, v interface{}) {
+func setRaw(key string, v interface{}) {
 	client.Set(key, v, 0)
 }
 
 func setBool(key string, value bool) {
-	set(key, strconv.FormatBool(value))
+	setRaw(key, strconv.FormatBool(value))
 }
 
 func getBool(key string) bool {
-	return parseBool(get(key).String())
+	return parseBool(getRaw(key).String())
 }
 
 func encode(v interface{}) []byte {

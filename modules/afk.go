@@ -68,18 +68,19 @@ func checkAfk(ctx *ext.Context, u *ext.Update) error {
 	chat := u.EffectiveChat()
 	user := u.EffectiveUser()
 	if user != nil && user.Bot {
-		// Don't replt to bots ffs
+		// Don't reply to bots ffs
 		return nil
 	}
 	if !(u.EffectiveMessage.Mentioned || (chat.IsAUser() && chat.GetID() != gotgproto.Self.ID)) {
 		return nil
 	}
-	if db.GetAFK() {
+	afk := db.GetAFK()
+	if !afk.Toggle {
 		return nil
 	}
 	text := stylisehelper.Start(styling.Plain("I'm currently AFK"))
-	if reason := db.GetAFKReason(); reason != "" {
-		text.Plain("\nReason: ").Code(reason)
+	if afk.Reason != "" {
+		text.Plain("\nReason: ").Code(afk.Reason)
 	}
 	ctx.Reply(u, text.StoArray, nil)
 	return nil
