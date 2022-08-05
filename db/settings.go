@@ -23,7 +23,8 @@ func UpdateBot(token string) {
 	set("settings", s)
 }
 
-func GetSettings() (s *Settings) {
+func GetSettings() *Settings {
+	var s = &Settings{}
 	get("settings", s)
 	return s
 }

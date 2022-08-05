@@ -9,7 +9,8 @@ func UpdateAFK(toggle bool, reason string) {
 	set("afk", &Afk{Toggle: toggle, Reason: reason})
 }
 
-func GetAFK() (a *Afk) {
+func GetAFK() *Afk {
+	var a = &Afk{}
 	get("afk", a)
-	return
+	return a
 }

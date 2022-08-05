@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./logo.png">
+<img src="./assets/logo.png">
 <b>A Powerful Telegram Userbot</b>
 <br>
 <a href="https://telegram.me/GIGAupdates"><img src="https://img.shields.io/badge/Updates%20Channel-blue?logo=telegram"></a>

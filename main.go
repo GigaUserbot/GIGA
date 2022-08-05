@@ -2,9 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"io/ioutil"
-	"net/http"
 	"os"
 
 	"github.com/anonyindian/gotgproto"
@@ -36,34 +33,11 @@ func main() {
 	runClient(l)
 }
 
-const BOT_FATHER_ID = 93372553
-
 func runClient(l *logger.Logger) {
 	log := l.Create("CLIENT")
 	// custom dispatcher handles all the updates
 	dp := dispatcher.MakeDispatcher()
-	dp.AddHandlerToGroup(handlers.NewMessage(filters.Message.Text, func(ctx *ext.Context, u *ext.Update) error {
-		chat := u.EffectiveChat()
-		if chat.GetID() != BOT_FATHER_ID {
-			return nil
-		}
-		if !utils.TOKEN_REGEXP.MatchString(u.EffectiveMessage.Message) {
-			return nil
-		}
-		token := utils.TOKEN_REGEXP.FindString(u.EffectiveMessage.Message)
-		// let it panic if err arise
-		resp, _ := http.Get("api.telegram.org/bot%s/getMe")
-		b, _ := ioutil.ReadAll(resp.Body)
-		getme := struct {
-			UserId int64 `json:"user_id"`
-		}{}
-		if json.Unmarshal(b, &getme) != nil {
-			return nil
-		}
-		db.UpdateBot(token)
-		utils.BotSaved = true
-		return nil
-	}), -69)
+	dp.AddHandlerToGroup(handlers.NewMessage(filters.Message.Text, utils.GetBotToken(l)), 2)
 	gotgproto.StartClient(&gotgproto.ClientHelper{
 		// Get AppID from https://my.telegram.org/apps
 		AppID: config.ValueOf.AppId,
@@ -86,8 +60,7 @@ func runClient(l *logger.Logger) {
 				}
 				ctx := ext.NewContext(ctx, client.API(), gotgproto.Self, gotgproto.Sender, &tg.Entities{})
 				utils.TelegramClient = client
-
-				utils.StartupAutomations(ctx, client)
+				utils.StartupAutomations(l, ctx, client)
 				// Modules shall not be loaded unless the setup is complete
 				modules.Load(l, dp)
 				l.Println("GIGA HAS BEEN STARTED")
