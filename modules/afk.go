@@ -11,6 +11,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/stylisehelper"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/db"
 	"github.com/gotd/td/telegram/message/styling"
 	"github.com/gotd/td/tg"
@@ -19,6 +20,7 @@ import (
 func (m *module) LoadAfk(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("AFK")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
+	helpmaker.SetModuleHelp("afk", "help of afk")
 	dispatcher.AddHandler(handlers.NewCommand("afk", authorised(afk)))
 	dispatcher.AddHandlerToGroup(handlers.NewMessage(filters.Message.All, checkAfk), 1)
 }

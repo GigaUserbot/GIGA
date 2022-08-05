@@ -12,6 +12,7 @@ import (
 	"github.com/anonyindian/gotgproto/types"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot"
+	"github.com/gigauserbot/giga/config"
 	"github.com/gigauserbot/giga/db"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/uploader"
@@ -40,7 +41,19 @@ func StartupAutomations(l *logger.Logger, ctx *ext.Context, client *telegram.Cli
 			}
 		}
 	}
-	if db.GetSettings().Token == "" {
+	if config.ValueOf.BotToken != "" {
+		b, err := bot.MakeBot(config.ValueOf.BotToken)
+		if err != nil {
+			l.ChangeLevel(logger.LevelCritical).Println("failed to start bot:", err.Error())
+			return
+		}
+		if !b.SupportsInlineQueries {
+			l.ChangeLevel(logger.LevelError).Println("Inline Queries are turned off for the bot,")
+			l.Println("Please enable them for full functionality of GIGA!")
+		}
+		bot.Username = b.Username
+		bot.StartClient(l, b)
+	} else if db.GetSettings().Token == "" {
 		uname := setupBot(ctx, client, nil)
 		if uname == "BOT_NOT_CREATED" {
 			fmt.Println("failed to create bot")
@@ -53,7 +66,12 @@ func StartupAutomations(l *logger.Logger, ctx *ext.Context, client *telegram.Cli
 	} else {
 		b, err := bot.MakeBot(db.GetSettings().Token)
 		if err != nil {
+			l.ChangeLevel(logger.LevelCritical).Println("failed to start bot:", err.Error())
 			return
+		}
+		if !b.SupportsInlineQueries {
+			l.ChangeLevel(logger.LevelError).Println("Inline Queries are turned off for the bot,")
+			l.Println("Please enable them for full functionality of GIGA!")
 		}
 		bot.StartClient(l, b)
 	}

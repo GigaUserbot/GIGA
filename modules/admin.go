@@ -9,6 +9,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/stylisehelper"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/telegram/message/styling"
 	"github.com/gotd/td/tg"
@@ -17,10 +18,7 @@ import (
 func (m *module) LoadAdmin(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("ADMIN")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
-	// dispatcher.AddHandlerToGroup(handlers.NewAnyUpdate(func(ctx *ext.Context, u *ext.Update) error {
-	// 	fmt.Println(u.UpdateClass)
-	// 	return nil
-	// }), 2)
+	helpmaker.SetModuleHelp("admin", "help of admin")
 	dispatcher.AddHandler(handlers.NewCommand("ban", authorised(ban)))
 	dispatcher.AddHandler(handlers.NewCommand("unban", authorised(unban)))
 }

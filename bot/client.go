@@ -10,6 +10,8 @@ import (
 	"github.com/anonyindian/logger"
 )
 
+var Username string
+
 func MakeBot(token string) (*gotgbot.Bot, error) {
 	return gotgbot.NewBot(token, &gotgbot.BotOpts{
 		Client: http.Client{},
@@ -35,10 +37,13 @@ func StartClient(l *logger.Logger, b *gotgbot.Bot) {
 		},
 	})
 	dispatcher := updater.Dispatcher
+
 	dispatcher.AddHandler(handlers.NewCommand("start", func(b *gotgbot.Bot, ctx *ext.Context) error {
 		ctx.EffectiveMessage.Reply(b, "Started", nil)
 		return ext.EndGroups
 	}))
+
+	Load(log, dispatcher)
 
 	updater.StartPolling(b, &ext.PollingOpts{
 		DropPendingUpdates: true,

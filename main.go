@@ -11,6 +11,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/sessionMaker"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/config"
 	"github.com/gigauserbot/giga/db"
 	"github.com/gigauserbot/giga/modules"
@@ -63,7 +64,8 @@ func runClient(l *logger.Logger) {
 				utils.StartupAutomations(l, ctx, client)
 				// Modules shall not be loaded unless the setup is complete
 				modules.Load(l, dp)
-				l.Println("GIGA HAS BEEN STARTED")
+				helpmaker.MakeHelp()
+				l.ChangeLevel(logger.LevelMain).Println("GIGA HAS BEEN STARTED")
 			}()
 			return nil
 		},

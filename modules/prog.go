@@ -7,12 +7,14 @@ import (
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gotd/td/tg"
 )
 
 func (m *module) LoadProg(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("PROG")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
+	helpmaker.SetModuleHelp("prog", "help fe")
 	dispatcher.AddHandler(handlers.NewCommand("killub", authorised(killub)))
 }
 

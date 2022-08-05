@@ -19,6 +19,7 @@ type config struct {
 	RedisPass     string `json:"redis_pass"`
 	SessionString string `json:"session_string"`
 	TestServer    bool   `json:"test_mode,omitempty"`
+	BotToken      string `json:"bot_token,omitempty"`
 }
 
 func Load(l *logger.Logger) {

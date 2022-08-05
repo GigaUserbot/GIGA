@@ -10,6 +10,7 @@ import (
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/entityhelper"
 	"github.com/anonyindian/logger"
+	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/tg"
 )
@@ -17,6 +18,7 @@ import (
 func (m *module) LoadMisc(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("MISC")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
+	helpmaker.SetModuleHelp("misc", "help fe")
 	dispatcher.AddHandler(handlers.NewCommand("ping", authorised(ping)))
 	dispatcher.AddHandler(handlers.NewCommand("alive", authorised(alive)))
 	dispatcher.AddHandler(handlers.NewCommand("json", authorised(jsonify)))
