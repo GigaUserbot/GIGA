@@ -21,11 +21,13 @@ func (m *module) LoadMisc(dispatcher *dispatcher.CustomDispatcher) {
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
 	helpmaker.SetModuleHelp("misc", `
 	This module provides help for the miscellaneous features like ping, json, etc.
-	
+
 	<b>Commands</b>:
-	 • <code>.ping</code>: Use this command to check ping between telegram and userbot client.   
-	 • <code>.json</code>: Get JSON output of a message.   
-	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.   
+	 • <code>.ping</code>: Use this command to check ping between telegram and userbot client.
+	 • <code>.json</code>: Get JSON output of a message.
+	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.
+     • <code>.save</code>: Use this command to save a message in your saved messages by replying to a message.
+
 `)
 	dispatcher.AddHandler(handlers.NewCommand("ping", authorised(ping)))
 	dispatcher.AddHandler(handlers.NewCommand("save", authorised(dotsave)))
