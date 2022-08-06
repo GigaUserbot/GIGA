@@ -39,7 +39,22 @@ func StartClient(l *logger.Logger, b *gotgbot.Bot) {
 	dispatcher := updater.Dispatcher
 
 	dispatcher.AddHandler(handlers.NewCommand("start", func(b *gotgbot.Bot, ctx *ext.Context) error {
-		ctx.EffectiveMessage.Reply(b, "Started", nil)
+		args := ctx.Args()
+		if len(args) < 2 {
+			ctx.EffectiveMessage.Reply(b, "Started", nil)
+			return ext.EndGroups
+		}
+		switch args[1] {
+		case "deploy_own_via_help":
+			ctx.EffectiveMessage.Reply(b, "Hey! It seems like you were trying use help section of GIGA deployed by someone else, unfortunately, we cannot allow you to use their userbot's help because we respect privacy of our users."+
+				"\n\nNo Worries Though! Deploy your own private GIGA using the following button and use all the features:", &gotgbot.SendMessageOpts{
+				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{
+					InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+						{{Text: "Deploy GIGA", Url: "https://github.com/GigaUserbot/GIGA"}},
+					},
+				},
+			})
+		}
 		return ext.EndGroups
 	}))
 
