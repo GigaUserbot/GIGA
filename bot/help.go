@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -39,10 +40,13 @@ func helpInline(b *gotgbot.Bot, ctx *ext.Context) error {
 }
 
 func helpCallback(b *gotgbot.Bot, ctx *ext.Context) error {
-	if ctx.CallbackQuery.From.Id != gotgproto.Self.ID {
+	query := ctx.CallbackQuery
+	if query.From.Id != gotgproto.Self.ID {
+		query.Answer(b, &gotgbot.AnswerCallbackQueryOpts{
+			Url: fmt.Sprintf("t.me/%s?start=deploy_own_via_help", strings.TrimPrefix(b.Username, "@")),
+		})
 		return ext.EndGroups
 	}
-	query := ctx.CallbackQuery
 	go query.Answer(b, nil)
 	if query.Data == "help_" {
 		b.EditMessageText(helpmaker.GetMainHelp(), &gotgbot.EditMessageTextOpts{
