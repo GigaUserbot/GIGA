@@ -20,14 +20,19 @@
       "description": "Get this value from my.telegram.org!",
       "value": ""
      },
+     "REDIS_URI": {
+      "description": "Get this value from redislabs.com",
+      "value": ""
+     },
+     "REDIS_PASS": {
+      "description": "Get this value from redislabs.com",
+      "value": ""
+     },
      "SESSION_STRING": {
       "description": "Get this value by running https://github.com/GigaUserbot/GIGA/blob/dev/session_maker.sh",
       "value": ""
      }
     },
-    "addons": [{
-        "plan": "heroku-postgresql"
-    }],
     "buildpack": [{
         "url": "heroku/go"
     }]
