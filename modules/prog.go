@@ -14,7 +14,12 @@ import (
 func (m *module) LoadProg(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("PROG")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
-	helpmaker.SetModuleHelp("prog", "help fe")
+	helpmaker.SetModuleHelp("prog", `
+	This module provides help for the commads like stopping userbot, etc.
+	
+	<b>Commands</b>:
+	 • <code>.killub</code>: Use this command to turn off the userbot.   
+`)
 	dispatcher.AddHandler(handlers.NewCommand("killub", authorised(killub)))
 }
 

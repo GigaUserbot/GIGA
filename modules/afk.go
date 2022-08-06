@@ -2,6 +2,7 @@ package modules
 
 import (
 	"fmt"
+	"html"
 	"strings"
 
 	"github.com/anonyindian/gotgproto"
@@ -20,7 +21,12 @@ import (
 func (m *module) LoadAfk(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("AFK")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
-	helpmaker.SetModuleHelp("afk", "help of afk")
+	helpmaker.SetModuleHelp("afk", `
+	This module provides help for the Away-From-Keyboard mode.
+	
+	<b>Commands</b>:
+	 • <code>.afk `+html.EscapeString("<on/off> <reason>")+`</code>: Use this command to turn on/off AFK mode.   
+`)
 	dispatcher.AddHandler(handlers.NewCommand("afk", authorised(afk)))
 	dispatcher.AddHandlerToGroup(handlers.NewMessage(filters.Message.All, checkAfk), 1)
 }
