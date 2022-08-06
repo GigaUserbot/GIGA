@@ -9,6 +9,7 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/callbackquery"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
+	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot/helpmaker"
 )
@@ -38,6 +39,9 @@ func helpInline(b *gotgbot.Bot, ctx *ext.Context) error {
 }
 
 func helpCallback(b *gotgbot.Bot, ctx *ext.Context) error {
+	if ctx.CallbackQuery.From.Id != gotgproto.Self.ID {
+		return ext.EndGroups
+	}
 	query := ctx.CallbackQuery
 	go query.Answer(b, nil)
 	if query.Data == "help_" {
