@@ -21,11 +21,11 @@
       "value": ""
      },
      "REDIS_URI": {
-      "description": "Get this value from redislabs.com",
+      "description": "Get this value from redislabs.com, (Add only if you don't have a verified heroku account.)",
       "value": ""
      },
      "REDIS_PASS": {
-      "description": "Get this value from redislabs.com",
+      "description": "Get this value from redislabs.com, (Add only if you don't have a verified heroku account.)",
       "value": ""
      },
      "SESSION_STRING": {
@@ -33,6 +33,9 @@
       "value": ""
      }
     },
+    "addons": [{
+        "plan": "rediscloud:30"
+    }],
     "buildpack": [{
         "url": "heroku/go"
     }]
