@@ -39,6 +39,7 @@ func helpInline(b *gotgbot.Bot, ctx *ext.Context) error {
 
 func helpCallback(b *gotgbot.Bot, ctx *ext.Context) error {
 	query := ctx.CallbackQuery
+	go query.Answer(b, nil)
 	if query.Data == "help_" {
 		b.EditMessageText(helpmaker.GetMainHelp(), &gotgbot.EditMessageTextOpts{
 			InlineMessageId: query.InlineMessageId,

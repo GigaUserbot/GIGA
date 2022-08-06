@@ -2,6 +2,7 @@ package modules
 
 import (
 	"fmt"
+	"html"
 
 	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
@@ -18,7 +19,13 @@ import (
 func (m *module) LoadAdmin(dispatcher *dispatcher.CustomDispatcher) {
 	var l = m.Logger.Create("ADMIN")
 	defer l.ChangeLevel(logger.LevelInfo).Println("LOADED")
-	helpmaker.SetModuleHelp("admin", "help of admin")
+	helpmaker.SetModuleHelp("admin", `
+This module provides help for the basic admin moderation rights like banning, unbanning etc.
+
+<b>Commands</b>:
+ • <code>.ban `+html.EscapeString("<username/reply_to_message>")+`</code>: Use this command to ban a user.   
+ • <code>.unban `+html.EscapeString("<username/reply_to_message>")+`</code>: Use this command to unban a user.   
+	`)
 	dispatcher.AddHandler(handlers.NewCommand("ban", authorised(ban)))
 	dispatcher.AddHandler(handlers.NewCommand("unban", authorised(unban)))
 }
