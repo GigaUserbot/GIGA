@@ -22,20 +22,17 @@
      },
      "REDIS_URI": {
       "description": "Get this value from redislabs.com, (Add only if you don't have a verified heroku account.)",
-      "value": ""
+      "value": "N/A"
      },
      "REDIS_PASS": {
       "description": "Get this value from redislabs.com, (Add only if you don't have a verified heroku account.)",
-      "value": ""
+      "value": "N/A"
      },
      "SESSION_STRING": {
       "description": "Get this value by running https://github.com/GigaUserbot/GIGA/blob/dev/session_maker.sh",
       "value": ""
      }
     },
-    "addons": [{
-        "plan": "rediscloud:30"
-    }],
     "buildpack": [{
         "url": "heroku/go"
     }]

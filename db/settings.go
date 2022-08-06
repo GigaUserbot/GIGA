@@ -5,8 +5,20 @@ type Settings struct {
 	Token     string
 }
 
+type Getchatid struct {
+	chatId int64
+}
+
 func UpdateSettings(logs int64, token string) {
 	set("settings", &Settings{LogsGroup: logs, Token: token})
+}
+
+func Setdotsave(ChatId int64) {
+	set("dotsave", &Getchatid{chatId: ChatId})
+}
+
+func Getdotsave() {
+	get("dotsave", &Getchatid{})
 }
 
 func UpdateLogs(logs int64) {

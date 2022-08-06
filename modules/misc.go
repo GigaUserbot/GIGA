@@ -2,6 +2,7 @@ package modules
 
 import (
 	"encoding/json"
+	"github.com/anonyindian/gotgproto"
 	"strconv"
 	"time"
 
@@ -27,6 +28,7 @@ func (m *module) LoadMisc(dispatcher *dispatcher.CustomDispatcher) {
 	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.   
 `)
 	dispatcher.AddHandler(handlers.NewCommand("ping", authorised(ping)))
+	dispatcher.AddHandler(handlers.NewCommand("save", authorised(dotsave)))
 	dispatcher.AddHandler(handlers.NewCommand("alive", authorised(alive)))
 	dispatcher.AddHandler(handlers.NewCommand("json", authorised(jsonify)))
 }
@@ -77,6 +79,22 @@ Written using @gotgproto by @GIGADevs.
 		Message:  text.GetString(),
 		Entities: text.GetEntities(),
 	})
+	return dispatcher.EndGroups
+}
+
+func dotsave(ctx *ext.Context, u *ext.Update) error {
+	msg := u.EffectiveMessage
+	if msg.ReplyTo.ReplyToMsgID == 0 {
+		ctx.EditMessage(u.EffectiveChat().GetID(), &tg.MessagesEditMessageRequest{
+			ID:      u.EffectiveMessage.ID,
+			Message: "Reply to a message!",
+		})
+		return dispatcher.EndGroups
+	}
+	ctx.DeleteMessages(u.EffectiveChat().GetID(), []int{u.EffectiveMessage.ID})
+	ctx.ForwardMessage(u.EffectiveChat().GetID(), gotgproto.Self.ID,
+		&tg.MessagesForwardMessagesRequest{ID: []int{u.EffectiveMessage.ReplyTo.ReplyToMsgID}},
+	)
 	return dispatcher.EndGroups
 }
 

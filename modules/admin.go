@@ -72,7 +72,7 @@ func unban(ctx *ext.Context, u *ext.Update) error {
 		})
 		return dispatcher.EndGroups
 	}
-	_, err = ctx.UnbanChatMember(chat.GetID(), target, 0)
+	_, err = ctx.UnbanChatMember(chat.GetID(), target)
 	if err != nil {
 		ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 			ID:      u.EffectiveMessage.ID,
