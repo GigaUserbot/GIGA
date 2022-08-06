@@ -11,6 +11,7 @@ import (
 	"github.com/anonyindian/gotgproto/dispatcher/handlers/filters"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/stylisehelper"
+	"github.com/anonyindian/gotgproto/storage/cache"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/db"
@@ -75,6 +76,9 @@ func afk(ctx *ext.Context, u *ext.Update) error {
 func checkAfk(ctx *ext.Context, u *ext.Update) error {
 	chat := u.EffectiveChat()
 	user := u.EffectiveUser()
+	if u.EffectiveMessage.Out {
+		return nil
+	}
 	if user != nil && user.Bot {
 		// Don't reply to bots ffs
 		return nil
@@ -82,6 +86,11 @@ func checkAfk(ctx *ext.Context, u *ext.Update) error {
 	if !(u.EffectiveMessage.Mentioned || (chat.IsAUser() && chat.GetID() != gotgproto.Self.ID)) {
 		return nil
 	}
+	afkCheckKey := fmt.Sprintf("afk-check-%d", user.ID)
+	if _, err := cache.Cache.Get(afkCheckKey); err == nil {
+		return nil
+	}
+	go cache.Cache.Set(afkCheckKey, make([]byte, 0))
 	afk := db.GetAFK()
 	if !afk.Toggle {
 		return nil
