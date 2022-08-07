@@ -69,6 +69,7 @@ func runClient(l *logger.Logger) {
 			}()
 			return nil
 		},
+		DisableCopyright: true,
 		DCList: func() (dct dcs.List) {
 			if config.ValueOf.TestServer {
 				dct = dcs.Test()
