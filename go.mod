@@ -5,7 +5,7 @@ go 1.18
 
 require (
 	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.9
-	github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808085139-f84e0fedfb0e
+	github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808173912-67d5ff78ed7e
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gotd/td v0.65.0
@@ -37,7 +37,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220805013720-a33c5aa5df48 // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
-	golang.org/x/sys v0.0.0-20220804214406-8e32c043e418 // indirect
+	golang.org/x/sys v0.0.0-20220808155132-1c4a2a72c664 // indirect
 	gorm.io/driver/sqlite v1.3.6 // indirect
 	gorm.io/gorm v1.23.8 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect

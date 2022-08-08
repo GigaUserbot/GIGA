@@ -6,6 +6,8 @@ github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220807185905-634694147aea h1:
 github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220807185905-634694147aea/go.mod h1:jVmS30Hf6vFwCUIw/NghSQMfdUjBo/aU0a6t/y0eBLM=
 github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808085139-f84e0fedfb0e h1:c6ksgW5l3MpozpCU4xoGlvcVN6Y1qr7e1ZlZqquEYcw=
 github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808085139-f84e0fedfb0e/go.mod h1:jVmS30Hf6vFwCUIw/NghSQMfdUjBo/aU0a6t/y0eBLM=
+github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808173912-67d5ff78ed7e h1:2EspEac52AImizBYfq2h69Oguwp+XuYTGk8lFRTrV+0=
+github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808173912-67d5ff78ed7e/go.mod h1:RU2UDoqFSUGQYTOR7qD2oWvcmhsRe9o3tgzW6M7JqwA=
 github.com/anonyindian/logger v1.0.0-alpha.3 h1:fYQFvadiiMI7hxW3VZNJXFzEWgmz/wgRB9tVey3oLDo=
 github.com/anonyindian/logger v1.0.0-alpha.3/go.mod h1:jb51uiKdlLOMtKakbyqsbrxTNr+Zt7qh2Va8sl5trTk=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
@@ -180,6 +182,8 @@ golang.org/x/sys v0.0.0-20210330210617-4fbd30eecc44/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20210510120138-977fb7262007/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220804214406-8e32c043e418 h1:9vYwv7OjYaky/tlAeD7C4oC9EsPTlaFl1H2jS++V+ME=
 golang.org/x/sys v0.0.0-20220804214406-8e32c043e418/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20220808155132-1c4a2a72c664 h1:v1W7bwXHsnLLloWYTVEdvGvA7BHMeBYsPcF0GLDxIRs=
+golang.org/x/sys v0.0.0-20220808155132-1c4a2a72c664/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2/go.mod h1:bEr9sfX3Q8Zfm5fL9x+3itogRgK3+ptLWKqgva+5dAk=
