@@ -2,13 +2,16 @@ package main
 
 import (
 	"context"
+	"flag"
 	"os"
+	"time"
 
 	"github.com/anonyindian/gotgproto"
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers/filters"
 	"github.com/anonyindian/gotgproto/ext"
+	"github.com/anonyindian/gotgproto/generic"
 	"github.com/anonyindian/gotgproto/sessionMaker"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot/helpmaker"
@@ -21,10 +24,25 @@ import (
 	"github.com/gotd/td/tg"
 )
 
+var (
+	delay         = flag.Int("delay", 0, "")
+	restartMsgId  = flag.Int("msg", 0, "")
+	restartChatId = flag.Int("chat", 0, "")
+)
+
 func main() {
+	flag.Parse()
 	l := logger.New(os.Stderr, &logger.LoggerOpts{
 		ProjectName: "GIGA-USERBOT",
 	})
+	if *restartMsgId != 0 {
+		// Clean Console
+		os.Stderr.Write([]byte("\n"))
+	}
+	if *delay != 0 {
+		l.Println("Delaying start for", *delay, "seconds")
+		time.Sleep(time.Second * time.Duration(*delay))
+	}
 	if config.DEBUG {
 		l.ChangeMinimumLevel(logger.LevelDebug)
 	}
@@ -47,7 +65,7 @@ func runClient(l *logger.Logger) {
 		// Session of your client
 		// sessionName: name of the session / session string in case of TelethonSession or StringSession
 		// sessionType: can be any out of Session, TelethonSession, StringSession.
-		Session: sessionMaker.NewSession(config.ValueOf.SessionString, sessionMaker.TelethonSession),
+		Session: sessionMaker.NewSession(config.GetSessionString(), sessionMaker.TelethonSession),
 		// Make sure to specify custom dispatcher here in order to enjoy gotgproto's update handling
 		Dispatcher: dp,
 		// Add the handlers, post functions in TaskFunc
@@ -61,10 +79,20 @@ func runClient(l *logger.Logger) {
 				}
 				ctx := ext.NewContext(ctx, client.API(), gotgproto.Self, gotgproto.Sender, &tg.Entities{})
 				utils.TelegramClient = client
-				utils.StartupAutomations(l, ctx, client)
+				if *restartMsgId == 0 {
+					utils.StartupAutomations(l, ctx, client)
+				} else {
+					generic.EditMessage(ctx, *restartChatId, &tg.MessagesEditMessageRequest{
+						ID:      *restartMsgId,
+						Message: "Restarted Successfully!",
+					})
+				}
 				// Modules shall not be loaded unless the setup is complete
 				modules.Load(l, dp)
 				helpmaker.MakeHelp()
+				if config.ValueOf.TestServer {
+					l.ChangeLevel(logger.LevelMain).Println("RUNNING ON TEST SERVER")
+				}
 				l.ChangeLevel(logger.LevelMain).Println("GIGA HAS BEEN STARTED")
 			}()
 			return nil
