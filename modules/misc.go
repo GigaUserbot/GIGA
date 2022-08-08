@@ -2,6 +2,7 @@ package modules
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +13,7 @@ import (
 	"github.com/anonyindian/gotgproto/dispatcher/handlers/filters"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/gotgproto/parsemode/entityhelper"
+	"github.com/anonyindian/gotgproto/types"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot/helpmaker"
 	"github.com/gigauserbot/giga/db"
@@ -148,13 +150,45 @@ func checkTags(ctx *ext.Context, u *ext.Update) error {
 	}
 	logsGroup := db.GetSettings().LogsGroup
 	if chat.IsAUser() {
+		chatUser := chat.(*types.User)
 		text := entityhelper.Bold("New Private Message")
-		text.Bold("\nBy: ").Mention("this person", chat.GetInputUser())
+		text.Bold("\nBy: ")
+		if chatUser.Username != "" {
+			text.Plain("@").Plain(chatUser.Username)
+		} else {
+			text.Code(chatUser.FirstName + " " + chatUser.LastName)
+		}
 		ctx.SendMessage(logsGroup, &tg.MessagesSendMessageRequest{
-			Background: true,
-			Message:    text.String + "this person",
-			Entities:   text.Entities,
+			Message:  text.String,
+			Entities: text.Entities,
 		})
+		return nil
 	}
+	text := entityhelper.Bold("New Chat Mention")
+	text.Bold("\nBy: ")
+	if user.Username != "" {
+		text.Plain("@").Plain(user.Username)
+	} else {
+		text.Code(user.FirstName + " " + user.LastName)
+	}
+	if link := getChatMessageLink(chat, u.EffectiveMessage.ID); link != "" {
+		text.Bold("\nLink: ").Plain(link)
+	}
+	ctx.SendMessage(logsGroup, &tg.MessagesSendMessageRequest{
+		Message:   text.String,
+		Entities:  text.Entities,
+		NoWebpage: true,
+	})
 	return nil
+}
+
+func getChatMessageLink(c types.EffectiveChat, msgId int) string {
+	if c.IsAChat() {
+		return ""
+	}
+	chat := c.(*types.Channel)
+	if chat.Username != "" {
+		return fmt.Sprintf("t.me/%s/%d", chat.Username, msgId)
+	}
+	return fmt.Sprintf("t.me/%d/%d", chat.ID, msgId)
 }
