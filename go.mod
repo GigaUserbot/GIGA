@@ -5,7 +5,7 @@ go 1.18
 
 require (
 	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.9
-	github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220807185905-634694147aea
+	github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220808085139-f84e0fedfb0e
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gotd/td v0.65.0
