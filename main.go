@@ -25,9 +25,10 @@ import (
 )
 
 var (
-	delay         = flag.Int("delay", 0, "")
-	restartMsgId  = flag.Int("msg", 0, "")
-	restartChatId = flag.Int("chat", 0, "")
+	delay          = flag.Int("delay", 0, "")
+	restartChatId  = flag.Int("chat", 0, "")
+	restartMsgId   = flag.Int("msg_id", 0, "")
+	restartMsgText = flag.String("msg_text", "", "")
 )
 
 func main() {
@@ -79,12 +80,12 @@ func runClient(l *logger.Logger) {
 				}
 				ctx := ext.NewContext(ctx, client.API(), gotgproto.Self, gotgproto.Sender, &tg.Entities{})
 				utils.TelegramClient = client
-				if *restartMsgId == 0 {
+				if *restartMsgId == 0 && *restartMsgText == "" {
 					utils.StartupAutomations(l, ctx, client)
 				} else {
 					generic.EditMessage(ctx, *restartChatId, &tg.MessagesEditMessageRequest{
 						ID:      *restartMsgId,
-						Message: "Restarted Successfully!",
+						Message: *restartMsgText,
 					})
 				}
 				// Modules shall not be loaded unless the setup is complete

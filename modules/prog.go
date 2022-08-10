@@ -1,16 +1,14 @@
 package modules
 
 import (
-	"fmt"
 	"os"
-	"os/exec"
-	"strings"
 
 	"github.com/anonyindian/gotgproto/dispatcher"
 	"github.com/anonyindian/gotgproto/dispatcher/handlers"
 	"github.com/anonyindian/gotgproto/ext"
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/bot/helpmaker"
+	"github.com/gigauserbot/giga/utils"
 	"github.com/gotd/td/tg"
 )
 
@@ -43,13 +41,6 @@ func restart(ctx *ext.Context, u *ext.Update) error {
 		ID:      u.EffectiveMessage.ID,
 		Message: "Restarting",
 	})
-	command := fmt.Sprintf("run main.go -delay=5 -chat=%d -msg=%d", chat.GetID(), u.EffectiveMessage.ID)
-	cmd := exec.Command("go", strings.Fields(command)...)
-	cmd.Stderr = os.Stderr
-	cmd.Stdout = os.Stdout
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Process.Release()
-	os.Exit(1)
+	utils.Restart(5, chat.GetID(), u.EffectiveMessage.ID, "Restarted Successfully!")
 	return dispatcher.EndGroups
 }
