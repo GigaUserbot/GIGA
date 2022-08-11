@@ -4,11 +4,27 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/anonyindian/logger"
 )
+
+func DoUpdate(chatId int64, msgId int) error {
+	err := gitPull()
+	if err != nil {
+		tmpDir := "."
+		buildWithClone(tmpDir)
+		restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+	}
+	err = buildBinary()
+	if err != nil {
+		return err
+	}
+	Restart(5, chatId, msgId, "Updated Successfully.")
+	return nil
+}
 
 var CurrentUpdate = &Update{}
 var currentVersion *version
@@ -39,7 +55,15 @@ func InitUpdate(l *logger.Logger) {
 func CheckChanges() (*Update, bool) {
 	var u Update
 	origin := "https://raw.githubusercontent.com/GigaUserbot/GIGA/dev/changelog.json"
-	json.Unmarshal([]byte(origin), &u)
+	resp, err := http.Get(origin)
+	if err != nil {
+		return nil, false
+	}
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, false
+	}
+	json.Unmarshal(b, &u)
 	return &u, CompareVersion(u.Version)
 }
 

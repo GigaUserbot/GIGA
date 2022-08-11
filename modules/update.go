@@ -13,6 +13,29 @@ import (
 
 func (m *module) LoadUpdate(dp *dispatcher.CustomDispatcher) {
 	dp.AddHandler(handlers.NewCommand("changelog", changeLog))
+	dp.AddHandler(handlers.NewCommand("update", update))
+}
+
+func update(ctx *ext.Context, u *ext.Update) error {
+	chat := u.EffectiveChat()
+	msg := u.EffectiveMessage
+	update, changed := utils.CheckChanges()
+	if !changed {
+		ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
+			Message: "You're currently running the latest version.",
+			ID:      msg.ID,
+		})
+		return dispatcher.EndGroups
+	}
+	text := entityhelper.Plain("Updating to ").Bold("GIGA ")
+	text.Code(fmt.Sprintf("v%s", update.Version))
+	ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
+		Message:  text.String,
+		Entities: text.Entities,
+		ID:       msg.ID,
+	})
+	utils.DoUpdate(chat.GetID(), msg.ID)
+	return dispatcher.EndGroups
 }
 
 func changeLog(ctx *ext.Context, u *ext.Update) error {
