@@ -40,6 +40,7 @@ func main() {
 		// Clean Console
 		os.Stderr.Write([]byte("\n"))
 	}
+
 	if *delay != 0 {
 		l.Println("Delaying start for", *delay, "seconds")
 		time.Sleep(time.Second * time.Duration(*delay))
@@ -47,6 +48,7 @@ func main() {
 	if config.DEBUG {
 		l.ChangeMinimumLevel(logger.LevelDebug)
 	}
+	utils.InitUpdate(l)
 	config.Load(l)
 	handlers.DefaultPrefix = []rune{'.', '$'}
 	db.Load(l)
