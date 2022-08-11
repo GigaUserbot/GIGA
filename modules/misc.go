@@ -92,7 +92,7 @@ func ping(ctx *ext.Context, u *ext.Update) error {
 	timeThen := time.Now()
 	utils.TelegramClient.Ping(ctx)
 	timeNow := time.Since(timeThen)
-	text := entityhelper.Plain("PONG\n").Code(strconv.FormatInt(timeNow.Milliseconds(), 10) + "ms")
+	text := entityhelper.Plain("🧭PONG🧭\n").Code(strconv.FormatInt(timeNow.Milliseconds(), 10) + "ms")
 	ctx.EditMessage(u.EffectiveChat().GetID(), &tg.MessagesEditMessageRequest{
 		ID:       u.EffectiveMessage.ID,
 		Message:  text.String,
