@@ -190,5 +190,5 @@ func getChatMessageLink(c types.EffectiveChat, msgId int) string {
 	if chat.Username != "" {
 		return fmt.Sprintf("t.me/%s/%d", chat.Username, msgId)
 	}
-	return fmt.Sprintf("t.me/%d/%d", chat.ID, msgId)
+	return fmt.Sprintf("t.me/c/%d/%d", chat.ID, msgId)
 }
