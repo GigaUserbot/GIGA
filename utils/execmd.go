@@ -10,14 +10,13 @@ func buildBinary() error {
 	return exec.Command("go", "build", ".").Run()
 }
 
-func buildWithClone(tmpDir string) error {
-	if err := gitClone(tmpDir); err != nil {
+func buildWithClone(dir string) error {
+	if err := gitClone(dir); err != nil {
 		return err
 	}
-	if err := exec.Command("go", "build", "tmp", "-o=bin/giga").Run(); err != nil {
+	if err := exec.Command("go", "build", dir, "-o=giga").Run(); err != nil {
 		return err
 	}
-	exec.Command("rm", "-rf", tmpDir).Run()
 	return nil
 }
 
@@ -30,8 +29,5 @@ func gitClone(dir string) error {
 		URL:               "https://github.com/GigaUserbot/GIGA",
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

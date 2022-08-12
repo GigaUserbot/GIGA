@@ -14,16 +14,14 @@ import (
 func DoUpdate(chatId int64, msgId int) error {
 	err := gitPull()
 	if err != nil {
-		tmpDir := "."
-		buildWithClone(tmpDir)
+		buildWithClone(".")
 		restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
 	}
 	err = buildBinary()
 	if err != nil {
 		return err
 	}
-	Restart(5, chatId, msgId, "Updated Successfully.")
-	return nil
+	return Restart(5, chatId, msgId, "Updated Successfully.")
 }
 
 var CurrentUpdate = &Update{}

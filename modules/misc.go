@@ -30,6 +30,7 @@ func (m *module) LoadMisc(dispatcher *dispatcher.CustomDispatcher) {
 	<b>Commands</b>:
 	 • <code>.ping</code>: Use this command to check ping between telegram and userbot client.   
 	 • <code>.json</code>: Get JSON output of a message.   
+	 • <code>.taglogger</code>: Enable/disable mentions logger.
 	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.   
 `)
 	dispatcher.AddHandler(handlers.NewCommand("ping", authorised(ping)))
