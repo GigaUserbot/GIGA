@@ -13,6 +13,8 @@ github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239 h1:kFOfPq6dUM1hTo
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
 github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220811082815-57b7254ee5d4 h1:ULG/nxxOlrG9N+cmsRsJ784UlNpUuhClCD9BChw+c2g=
 github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220811082815-57b7254ee5d4/go.mod h1:RU2UDoqFSUGQYTOR7qD2oWvcmhsRe9o3tgzW6M7JqwA=
+github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220812101930-fb0f873515a2 h1:8mDrT9JYyX+oVwecQ2IT4hmFpmHEdG+fI8olU1vnTBM=
+github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220812101930-fb0f873515a2/go.mod h1:RU2UDoqFSUGQYTOR7qD2oWvcmhsRe9o3tgzW6M7JqwA=
 github.com/anonyindian/logger v1.0.0-alpha.3 h1:fYQFvadiiMI7hxW3VZNJXFzEWgmz/wgRB9tVey3oLDo=
 github.com/anonyindian/logger v1.0.0-alpha.3/go.mod h1:jb51uiKdlLOMtKakbyqsbrxTNr+Zt7qh2Va8sl5trTk=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPdPJAN/hZIm0C4OItdklCFmMRWYpio=
