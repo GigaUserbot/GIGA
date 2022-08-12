@@ -41,4 +41,4 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: divkix/GIGA-Userbot:latest
+          tags: divkix/giga-userbot:latest
