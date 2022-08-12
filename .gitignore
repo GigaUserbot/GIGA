@@ -24,3 +24,6 @@ giga
 .env
 
 ignore.config.json
+
+# output directory
+out/

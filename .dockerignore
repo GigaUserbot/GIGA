@@ -1,8 +1,0 @@
-**
-!modules
-!sql
-!utils
-!*.go
-!go.*
-!config*
-!vendor
