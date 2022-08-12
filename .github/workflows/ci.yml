@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version: ['1.17', '1.18', '1.19']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+
+    steps:
+      - name: Set up ${{ matrix.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      - uses: actions/checkout@v3
+      - name: Build app
+        run: |-
+          GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o out/GigaUserbot -ldflags="-w -s" .
