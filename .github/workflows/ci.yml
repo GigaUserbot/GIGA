@@ -22,3 +22,23 @@ jobs:
       - name: Build app
         run: |-
           go build -o out/GigaUserbot -ldflags="-w -s" .
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: divkix/GIGA-Userbot:latest
