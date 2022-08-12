@@ -8,4 +8,5 @@ RUN GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o out/GigaUserbo
 # Run Stage: Run bot using the bot and doppler binary copied from build stage
 FROM ubuntu:latest
 COPY --from=builder /app/out/GigaUserbot /app/GigaUserbot
+COPY changelog.json /app/changelog.json
 CMD ["/app/GigaUserbot"]
