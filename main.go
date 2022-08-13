@@ -68,7 +68,7 @@ func runClient(l *logger.Logger) {
 		// Session of your client
 		// sessionName: name of the session / session string in case of TelethonSession or StringSession
 		// sessionType: can be any out of Session, TelethonSession, StringSession.
-		Session: sessionMaker.NewSession(config.GetSessionString(), sessionMaker.TelethonSession),
+		Session: sessionMaker.NewSession(config.GetSessionString(), config.GetSessionType()),
 		// Make sure to specify custom dispatcher here in order to enjoy gotgproto's update handling
 		Dispatcher: dp,
 		// Add the handlers, post functions in TaskFunc

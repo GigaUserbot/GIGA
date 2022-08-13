@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 
+	"github.com/anonyindian/gotgproto/sessionMaker"
 	"github.com/anonyindian/logger"
 )
 
@@ -19,6 +21,7 @@ type config struct {
 	RedisPass         string `json:"redis_pass"`
 	TestSessionString string `json:"test_session_string"`
 	SessionString     string `json:"session_string"`
+	SessionType       string `json:"session_type,omitempty"`
 	HerokuApiKey      string `json:"heroku_api_key,omitempty"`
 	HerokuAppName     string `json:"heroku_app_name,omitempty"`
 	TestServer        bool   `json:"test_mode,omitempty"`
@@ -49,4 +52,15 @@ func GetSessionString() string {
 		return ValueOf.TestSessionString
 	}
 	return ValueOf.SessionString
+}
+
+func GetSessionType() sessionMaker.SessionType {
+	switch strings.ToLower(ValueOf.SessionType) {
+	case "pyrogram", "pyro":
+		return sessionMaker.PyrogramSession
+	case "gotgproto", "native":
+		return sessionMaker.StringSession
+	default:
+		return sessionMaker.TelethonSession
+	}
 }
