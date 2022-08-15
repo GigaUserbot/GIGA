@@ -9,7 +9,7 @@ require (
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/gotd/td v0.67.0
+	github.com/gotd/td v0.68.0
 	github.com/joho/godotenv v1.4.0
 )
 
