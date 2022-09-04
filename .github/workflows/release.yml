@@ -30,7 +30,7 @@ jobs:
           if [ -z "$tag" ]; then
             tag=${GITHUB_REF#refs/tags/}
           fi
-          git tag -a -m "Release $tag" "$tag"
+          git tag -a -m "Release $tag" "$tag" -f
           git push origin "$tag"
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
