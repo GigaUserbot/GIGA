@@ -27,3 +27,5 @@ ignore.config.json
 
 # output directory
 out/
+
+dist/

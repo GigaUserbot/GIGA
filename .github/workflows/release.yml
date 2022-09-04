@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        required: true
+
+jobs:
+  goreleaser:
+    name: Release Binaries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v3
+      - name: Create and Push Tag
+        run: |-
+          tag=${{ github.event.inputs.tag }} # if triggered by workflow_dispatch
+          if [ -z "$tag" ]; then
+            tag=${GITHUB_REF#refs/tags/}
+          fi
+          git tag -a -m "Release $tag" "$tag"
+          git push origin "$tag"
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          version: latest
+          args: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
