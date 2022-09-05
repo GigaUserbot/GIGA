@@ -4,7 +4,7 @@ module github.com/gigauserbot/giga
 go 1.18
 
 require (
-	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.9
+	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.10
 	github.com/anonyindian/gotgproto v1.0.0-beta08.0.20220813082126-f98d0f42e1d5
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/go-git/go-git/v5 v5.4.2
