@@ -1,3 +1,3 @@
 FROM golang:1.19
-COPY GIGA changelog.json /app/
-CMD ["/app/GigaUserbot"]
+COPY giga changelog.json /app/
+CMD ["/app/giga"]
