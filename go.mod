@@ -9,7 +9,7 @@ require (
 	github.com/anonyindian/logger v1.0.0-alpha.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/gotd/td v0.67.0
+	github.com/gotd/td v0.68.1
 	github.com/joho/godotenv v1.4.0
 )
 
@@ -46,7 +46,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.9.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	go.uber.org/zap v1.22.0 // indirect
+	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
