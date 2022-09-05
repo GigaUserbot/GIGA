@@ -29,3 +29,5 @@ ignore.config.json
 out/
 
 dist/
+
+dist/
