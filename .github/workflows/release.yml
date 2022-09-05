@@ -14,9 +14,6 @@ jobs:
   goreleaser:
     name: Release Binaries
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: write
-    #   packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
