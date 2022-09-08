@@ -31,11 +31,13 @@ func (m *module) LoadMisc(dp *dispatcher.CustomDispatcher) {
 	 • <code>.ping</code>: Use this command to check ping between telegram and userbot client.   
 	 • <code>.json</code>: Get JSON output of a message.   
 	 • <code>.taglogger</code>: Enable/disable mentions logger.
-	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.   
+	 • <code>.alive</code>: Use this command to check whether the userbot is alive or not.
+		• <code>.save</code>: Use this command to save a message in your saved messages by replying to a message.
 `)
 	dp.AddHandler(handlers.NewCommand("ping", authorised(ping)))
 	dp.AddHandler(handlers.NewCommand("alive", authorised(alive)))
 	dp.AddHandler(handlers.NewCommand("json", authorised(jsonify)))
+	dp.AddHandler(handlers.NewCommand("save", authorised(dotsave)))
 	dp.AddHandler(handlers.NewCommand("taglogger", authorised(tagLogger)))
 	dp.AddHandlerToGroup(handlers.NewMessage(filters.Message.All, checkTags), -1)
 }
@@ -94,14 +96,17 @@ func dotsave(ctx *ext.Context, u *ext.Update) error {
 	if msg.ReplyTo.ReplyToMsgID == 0 {
 		ctx.EditMessage(u.EffectiveChat().GetID(), &tg.MessagesEditMessageRequest{
 			ID:      u.EffectiveMessage.ID,
-			Message: "Reply to a message!",
+			Message: "Reply to a message to save it in your saved message!",
 		})
 		return dispatcher.EndGroups
 	}
-	ctx.DeleteMessages(u.EffectiveChat().GetID(), []int{u.EffectiveMessage.ID})
 	ctx.ForwardMessage(u.EffectiveChat().GetID(), gotgproto.Self.ID,
 		&tg.MessagesForwardMessagesRequest{ID: []int{u.EffectiveMessage.ReplyTo.ReplyToMsgID}},
 	)
+	ctx.EditMessage(u.EffectiveChat().GetID(), &tg.MessagesEditMessageRequest{
+		ID:      u.EffectiveMessage.ID,
+		Message: "Saved Successfully!",
+	})
 	return dispatcher.EndGroups
 }
 

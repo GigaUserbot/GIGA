@@ -6,7 +6,7 @@ import (
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/config"
 	"github.com/go-redis/redis"
-	"log"
+	"os"
 	"strconv"
 	"time"
 )
@@ -26,13 +26,15 @@ func Load(l *logger.Logger) {
 	} else {
 		options, err := redis.ParseURL(config.ValueOf.RedisCloudUrl)
 		if err != nil {
-			log.Fatalln(err.Error())
+			l.ChangeLevel(logger.LevelError).Println(err.Error())
+			os.Exit(1)
 		}
 		client = redis.NewClient(options)
 	}
 	err := client.Ping().Err()
 	if err != nil {
-		log.Fatalln(err.Error())
+		l.ChangeLevel(logger.LevelError).Println(err.Error())
+		os.Exit(1)
 	}
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
 }

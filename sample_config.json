@@ -3,6 +3,6 @@
     "api_hash":"hash",
     "redis_uri": "",
     "redis_pass": "",
-    "rediscloud_url": "",
+    "redis_cloud_url": "",
     "session_string":"string"
 }

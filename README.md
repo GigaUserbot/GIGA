@@ -19,12 +19,6 @@ The userbot is still under development but you can deploy it through your consol
         -> `go build -o giga -ldflags="-w -s" .`
     - Run the binary built 
         -> `./giga`
-- **Deploying on Heroku**
-    - You can quickly deploy GIGA on Heroku using the following deploy button:
-    
-        [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/GigaUserbot/GIGA)
-
-    **After successful deployment, if you have verified heroku account then go to the dynos tab and add redis cloud db from heroku.**
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

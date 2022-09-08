@@ -25,13 +25,14 @@ type config struct {
 	HerokuAppName     string `json:"heroku_app_name,omitempty"`
 	TestServer        bool   `json:"test_mode,omitempty"`
 	BotToken          string `json:"bot_token,omitempty"`
+	RedisCloudUrl     string `json:"redis_cloud_url,omitempty"`
 }
 
 func Load(l *logger.Logger) {
 	l = l.Create("CONFIG")
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
 	initPlatform()
-	b, err := ioutil.ReadFile("config.json")
+	b, err := os.ReadFile("config.json")
 	if err != nil {
 		if err := ValueOf.setupEnvVars(l); err != nil {
 			l.ChangeLevel(logger.LevelError).Println(err.Error())
