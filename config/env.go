@@ -8,10 +8,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/anonyindian/logger"
 	"github.com/joho/godotenv"
 )
 
-func (c *config) setupEnvVars() error {
+func (c *config) setupEnvVars(l *logger.Logger) error {
+	l = l.Create("ENV")
 	_ = godotenv.Load()
 	val := reflect.ValueOf(c).Elem()
 	notFoundArr := make([]string, 0)
@@ -32,6 +34,9 @@ func (c *config) setupEnvVars() error {
 			ev, _ := strconv.ParseBool(envVal)
 			val.Field(i).SetBool(ev)
 		}
+	}
+	if Platform == Heroku && (ValueOf.HerokuApiKey == "" || ValueOf.HerokuAppName == "") {
+		l.ChangeLevel(logger.LevelError).Println("Please add HEROKU_API_KEY and HEROKU_APP_NAME otherwise GIGA would not work properly.")
 	}
 	if len(notFoundArr) == 0 {
 		return nil

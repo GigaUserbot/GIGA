@@ -1,18 +1,25 @@
 version: '3.9'
 services:
   db:
-    image: postgres:latest
+    image: redis:latest
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    networks:
+      - gigaub
+    volumes:
+      - giga-db-data:/data
   giga-ub:
     image: giga-ub
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
-    links:
-      - db
     depends_on:
       - db
+    networks:
+      - gigaub
+
+volumes:
+  giga-db-data:
+
+networks:
+  gigaub:

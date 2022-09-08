@@ -1,7 +1,5 @@
 package db
 
-// TODO: start database
-
 import (
 	"bytes"
 	"encoding/gob"
@@ -61,7 +59,7 @@ func setBool(key string, value bool) {
 }
 
 func getBool(key string) bool {
-	return parseBool(getRaw(key).String())
+	return parseBool(getRaw(key).Val())
 }
 
 func encode(v interface{}) []byte {

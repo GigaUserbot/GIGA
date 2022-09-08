@@ -29,6 +29,8 @@ The userbot is still under development but you can deploy it through your consol
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+In order to create and add a new module to GIGA, check out [adding_modules.md](./adding_modules.md).
+
 ## License
 [![GNU Affero General Public License v3.0](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/agpl-3.0.en.html#header)    
 [Licensed under GNU AGPL v3.0.](https://www.gnu.org/licenses/agpl-3.0.en.html#header)   

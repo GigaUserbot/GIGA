@@ -69,5 +69,5 @@ func StartClient(l *logger.Logger, b *gotgbot.Bot) {
 			},
 		},
 	})
-	log.Println("STARTED")
+	log.ChangeLevel(logger.LevelMain).Println("STARTED")
 }
