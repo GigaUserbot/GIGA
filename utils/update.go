@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -11,17 +12,40 @@ import (
 	"github.com/anonyindian/logger"
 )
 
-func DoUpdate(chatId int64, msgId int) error {
-	err := gitPull()
-	if err != nil {
-		buildWithClone(".")
-		restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
-	}
-	err = buildBinary()
-	if err != nil {
+func DoUpdate(version string, chatId int64, msgId int) error {
+	// err := gitPull()
+	// if err != nil {
+	// 	buildWithClone(".")
+	// 	restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+	// }
+	// err = buildBinary()
+	// if err != nil {
+	// 	return err
+	// }
+	if err := downloadUpdate(version); err != nil {
 		return err
 	}
-	return Restart(5, chatId, msgId, "Updated Successfully.")
+	return restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+}
+
+func downloadUpdate(version string) error {
+	os, err := GetSupportedOS()
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	arch, err := GetSupportedARCH()
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	url := fmt.Sprintf(
+		"https://github.com/GigaUserbot/GIGA/releases/download/v%s/giga_%s_%s_%s",
+		version, version, os, arch,
+	)
+	err = DownloadFile("giga", url)
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	return nil
 }
 
 var CurrentUpdate = &Update{}
