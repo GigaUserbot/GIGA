@@ -35,9 +35,6 @@ func (c *config) setupEnvVars(l *logger.Logger) error {
 			val.Field(i).SetBool(ev)
 		}
 	}
-	if Platform == Heroku && (ValueOf.HerokuApiKey == "" || ValueOf.HerokuAppName == "") {
-		l.ChangeLevel(logger.LevelError).Println("Please add HEROKU_API_KEY and HEROKU_APP_NAME otherwise GIGA would not work properly.")
-	}
 	if len(notFoundArr) == 0 {
 		return nil
 	}

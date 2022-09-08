@@ -21,8 +21,6 @@ type config struct {
 	TestSessionString string `json:"test_session_string"`
 	SessionString     string `json:"session_string"`
 	SessionType       string `json:"session_type,omitempty"`
-	HerokuApiKey      string `json:"heroku_api_key,omitempty"`
-	HerokuAppName     string `json:"heroku_app_name,omitempty"`
 	TestServer        bool   `json:"test_mode,omitempty"`
 	BotToken          string `json:"bot_token,omitempty"`
 	RedisCloudUrl     string `json:"redis_cloud_url,omitempty"`
