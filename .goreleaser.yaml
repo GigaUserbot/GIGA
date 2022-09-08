@@ -1,0 +1,87 @@
+project_name: giga
+release:
+  replace_existing_draft: true
+  header: |
+    Welcome to this new release!
+  footer: |
+    Docker Images:
+    `docker.io/divideprojects/{{ .ProjectName }}:latest`
+    `ghcr.io/gigauserbot/{{ .ProjectName }}:latest`
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+builds:
+  - goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{ .CommitDate }}
+archives:
+  - format: binary
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+dockers:
+  # amd64 only
+  - goarch: amd64
+    dockerfile: goreleaser.Dockerfile
+    use: buildx
+    image_templates:
+      - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-amd64"
+      - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    extra_files:
+      - changelog.json
+  # arm64 only
+  - goarch: arm64
+    dockerfile: goreleaser.Dockerfile
+    use: buildx
+    image_templates:
+      - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+      - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+    build_flag_templates:
+      - "--platform=linux/arm64/v8"
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    extra_files:
+      - changelog.json
+
+docker_manifests:
+  # docker hub
+  - name_template: "docker.io/divideprojects/{{ .ProjectName }}:{{ .Version }}"
+    image_templates:
+    - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+  - name_template: "docker.io/divideprojects/{{ .ProjectName }}:latest"
+    image_templates:
+    - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    - "docker.io/divideprojects/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+
+  # github container registry
+  - name_template: "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Version }}"
+    image_templates:
+    - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
+  - name_template: "ghcr.io/gigauserbot/{{ .ProjectName }}:latest"
+    image_templates:
+    - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    - "ghcr.io/gigauserbot/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
