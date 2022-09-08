@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -22,10 +23,34 @@ func DoUpdate(version string, chatId int64, msgId int) error {
 	// if err != nil {
 	// 	return err
 	// }
+	if err := refreshChangelog(); err != nil {
+		return err
+	}
 	if err := downloadUpdate(version); err != nil {
 		return err
 	}
 	return restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+}
+
+func refreshChangelog() error {
+	origin := "https://raw.githubusercontent.com/GigaUserbot/GIGA/dev/changelog.json"
+	resp, err := http.Get(origin)
+	if err != nil {
+		return err
+	}
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	const fileName = "changelog.json"
+	_ = os.Remove(fileName)
+	out, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = out.Write(b)
+	return err
 }
 
 func downloadUpdate(version string) error {
