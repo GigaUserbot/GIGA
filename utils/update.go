@@ -38,7 +38,7 @@ func refreshChangelog() error {
 	if err != nil {
 		return err
 	}
-	b, err := os.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
