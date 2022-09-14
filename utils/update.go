@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -12,17 +13,64 @@ import (
 	"github.com/anonyindian/logger"
 )
 
-func DoUpdate(chatId int64, msgId int) error {
-	err := gitPull()
-	if err != nil {
-		buildWithClone(".")
-		restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+func DoUpdate(version string, chatId int64, msgId int) error {
+	// err := gitPull()
+	// if err != nil {
+	// 	buildWithClone(".")
+	// 	restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+	// }
+	// err = buildBinary()
+	// if err != nil {
+	// 	return err
+	// }
+	if err := refreshChangelog(); err != nil {
+		return err
 	}
-	err = buildBinary()
+	if err := downloadUpdate(version); err != nil {
+		return err
+	}
+	return restart("giga", []string{}, 5, chatId, msgId, "Updated Successfully.")
+}
+
+func refreshChangelog() error {
+	origin := "https://raw.githubusercontent.com/GigaUserbot/GIGA/dev/changelog.json"
+	resp, err := http.Get(origin)
 	if err != nil {
 		return err
 	}
-	return Restart(5, chatId, msgId, "Updated Successfully.")
+	b, err := os.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	const fileName = "changelog.json"
+	_ = os.Remove(fileName)
+	out, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = out.Write(b)
+	return err
+}
+
+func downloadUpdate(version string) error {
+	os, err := GetSupportedOS()
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	arch, err := GetSupportedARCH()
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	url := fmt.Sprintf(
+		"https://github.com/GigaUserbot/GIGA/releases/download/v%s/giga_%s_%s_%s",
+		version, version, os, arch,
+	)
+	err = DownloadFile("giga", url)
+	if err != nil {
+		return fmt.Errorf("failed to download update: %w", err)
+	}
+	return nil
 }
 
 var CurrentUpdate = &Update{}

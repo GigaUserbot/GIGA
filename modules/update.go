@@ -45,7 +45,7 @@ func update(ctx *ext.Context, u *ext.Update) error {
 		Entities: text.Entities,
 		ID:       msg.ID,
 	})
-	if err := utils.DoUpdate(chat.GetID(), msg.ID); err != nil {
+	if err := utils.DoUpdate(update.Version, chat.GetID(), msg.ID); err != nil {
 		ctx.EditMessage(chat.GetID(), &tg.MessagesEditMessageRequest{
 			Message: fmt.Sprintf("failed to update: %s", err.Error()),
 			ID:      msg.ID,
