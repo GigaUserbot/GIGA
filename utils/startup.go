@@ -77,7 +77,7 @@ func StartupAutomations(l *logger.Logger, ctx *ext.Context, client *telegram.Cli
 	}
 }
 
-var TOKEN_REGEXP = regexp.MustCompile(`(\d+:[a-zA-Z0-9_\-]+)`)
+var TokenRegexp = regexp.MustCompile(`(\d+:[a-zA-Z0-9_\-]+)`)
 
 func setupBot(ctx *ext.Context, client *telegram.Client, u types.EffectiveChat) string {
 	if u == nil {
@@ -161,10 +161,10 @@ func GetBotToken(l *logger.Logger) func(ctx *ext.Context, u *ext.Update) error {
 		if chat.GetID() != BotFatherId {
 			return nil
 		}
-		if !TOKEN_REGEXP.MatchString(u.EffectiveMessage.Message) {
+		if !TokenRegexp.MatchString(u.EffectiveMessage.Message) {
 			return nil
 		}
-		token := TOKEN_REGEXP.FindString(u.EffectiveMessage.Message)
+		token := TokenRegexp.FindString(u.EffectiveMessage.Message)
 		b, err := bot.MakeBot(token)
 		if err != nil {
 			uname := setupBot(ctx, TelegramClient, nil)

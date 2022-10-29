@@ -7,16 +7,13 @@ var Platform platform
 type platform int
 
 const (
-	Heroku platform = iota
-	Railway
+	Railway platform = iota
 	Okteto
 	Local
 )
 
 func initPlatform() {
 	switch {
-	case checkEnv("DYNO"):
-		Platform = Heroku
 	case checkEnv("RAILWAY_STATIC_URL"):
 		Platform = Railway
 	case checkEnv("OKTETO_TOKEN"):

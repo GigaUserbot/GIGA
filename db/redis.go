@@ -3,25 +3,39 @@ package db
 import (
 	"bytes"
 	"encoding/gob"
-	"strconv"
-	"time"
-
 	"github.com/anonyindian/logger"
 	"github.com/gigauserbot/giga/config"
 	"github.com/go-redis/redis"
+	"os"
+	"strconv"
+	"time"
 )
 
 var client *redis.Client
 
 func Load(l *logger.Logger) {
 	l = l.Create("DATABASE")
-	client = redis.NewClient(&redis.Options{
-		Addr:         config.ValueOf.RedisUri,
-		Password:     config.ValueOf.RedisPass,
-		DB:           0,
-		DialTimeout:  time.Second,
-		MinIdleConns: 0,
-	})
+	if config.ValueOf.RedisCloudUrl == "" {
+		client = redis.NewClient(&redis.Options{
+			Addr:         config.ValueOf.RedisUri,
+			Password:     config.ValueOf.RedisPass,
+			DB:           0,
+			DialTimeout:  time.Second,
+			MinIdleConns: 0,
+		})
+	} else {
+		options, err := redis.ParseURL(config.ValueOf.RedisCloudUrl)
+		if err != nil {
+			l.ChangeLevel(logger.LevelError).Println(err.Error())
+			os.Exit(1)
+		}
+		client = redis.NewClient(options)
+	}
+	err := client.Ping().Err()
+	if err != nil {
+		l.ChangeLevel(logger.LevelError).Println(err.Error())
+		os.Exit(1)
+	}
 	defer l.ChangeLevel(logger.LevelMain).Println("LOADED")
 }
 

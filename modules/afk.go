@@ -91,13 +91,13 @@ func checkAfk(ctx *ext.Context, u *ext.Update) error {
 		return nil
 	}
 	go cache.Cache.Set(afkCheckKey, make([]byte, 0))
-	afk := db.GetAFK()
-	if !afk.Toggle {
+	isafk := db.GetAFK()
+	if !isafk.Toggle {
 		return nil
 	}
 	text := stylisehelper.Start(styling.Plain("I'm currently AFK"))
-	if afk.Reason != "" {
-		text.Plain("\nReason: ").Code(afk.Reason)
+	if isafk.Reason != "" {
+		text.Plain("\nReason: ").Code(isafk.Reason)
 	}
 	ctx.Reply(u, text.StoArray, nil)
 	return nil

@@ -33,7 +33,7 @@ func Restart(delay int, chatId int64, msgId int, msgText string) error {
 	// command = append(command, args...)
 	// // fmt.Println(command)
 
-	args := []string{}
+	var args []string
 	executable, err := os.Executable()
 	if strings.Contains(executable, tempDir) || err != nil {
 		executable = "go"

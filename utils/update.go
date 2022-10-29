@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -38,7 +38,7 @@ func refreshChangelog() error {
 	if err != nil {
 		return err
 	}
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ type Update struct {
 }
 
 func InitUpdate(l *logger.Logger) {
-	b, err := ioutil.ReadFile("changelog.json")
+	b, err := os.ReadFile("changelog.json")
 	if err != nil {
 		l.ChangeLevel(logger.LevelCritical).Printlnf("Failed to open changelog.json: %s\n", err.Error())
 		return
@@ -106,7 +106,7 @@ func CheckChanges() (*Update, bool) {
 	if err != nil {
 		return nil, false
 	}
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, false
 	}
@@ -149,5 +149,5 @@ func parseVersion(s string) (*version, error) {
 }
 
 func (v *version) compare(v1 *version) bool {
-	return (v1.major > v.major || v1.minor > v.minor || v1.patch > v.patch)
+	return v1.major > v.major || v1.minor > v.minor || v1.patch > v.patch
 }
