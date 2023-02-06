@@ -10,7 +10,7 @@ require (
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gotd/td v0.68.1
-	github.com/joho/godotenv v1.4.0
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
